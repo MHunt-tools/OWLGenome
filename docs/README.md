@@ -1,5 +1,5 @@
 # OWLGenome: A Genome-Scale Long-Read Mapper
-Team members: Dominique Duliepre, Maxwell Hunt, Rachel Ong, RJ Jiao
+Team members: Maxwell Hunt, Dominique Duliepre, RJ Jiao, Rachel Ong
 
 
 ## Table of Contents
