@@ -1,0 +1,8 @@
+## To test inputs against genome
+python main.py -g data//Long_reads/long_reads_ref_genome.fasta -i data//Long_reads/long_reads_500_subset.fastq -o output.tsv --ground_truth data//Long_reads/long_reads_500_subset_ground_truth_1_base.txt -v -l -f
+
+## To simulate data
+python simulate.py -g data//Long_reads/long_reads_ref_genome.fasta -fasta_out data//test_seqs_2.fasta -table_out data//test_seqs_2_ground_truth.tsv -f
+
+## To test simulated data
+python main.py -g data//Long_reads/long_reads_ref_genome.fasta -i data//test_seqs_2.fasta -o output.tsv --ground_truth data//test_seqs_2_ground_truth.tsv -v -l -f

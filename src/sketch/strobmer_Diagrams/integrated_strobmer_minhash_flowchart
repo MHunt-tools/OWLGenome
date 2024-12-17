@@ -1,0 +1,31 @@
+// Integrated Strobmer and Weighted MinHash Workflow
+digraph {
+	Start [label=Start color=lightgreen fontname=Helvetica fontsize=10 shape=oval style=filled]
+	LoadSequence [label="Load DNA Sequence
+(Input: sequence)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	InitializeStrobmer [label="Initialize Strobmer Parameters
+(k: k-mer size, l: window size, s: spacing, include_revcom)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenerateStrobemers [label="Generate Strobemers with Frequencies
+(Action: Sliding window to extract strobemers and count frequencies)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	InitializeMinHash [label="Initialize Weighted MinHash
+(Input: num_hashes)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenerateGenomeSketch [label="Generate Genome Strobemer Sketch
+(Input: genome_strobemers_with_freq, WeightedMinHash instance)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenerateReadSketch [label="Generate Read Strobemer Sketch
+(Input: read_strobemers_with_freq, WeightedMinHash instance)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	EstimateSimilarity [label="Estimate Jaccard Similarity
+(Action: Compare genome and read sketches)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	OutputSimilarity [label="Output Similarity Score
+(Action: Print or store the similarity)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	End [label=End color=lightgreen fontname=Helvetica fontsize=10 shape=oval style=filled]
+	Start -> LoadSequence
+	LoadSequence -> InitializeStrobmer
+	InitializeStrobmer -> GenerateStrobemers
+	GenerateStrobemers -> InitializeMinHash
+	InitializeMinHash -> GenerateGenomeSketch
+	InitializeMinHash -> GenerateReadSketch
+	GenerateGenomeSketch -> EstimateSimilarity
+	GenerateReadSketch -> EstimateSimilarity
+	EstimateSimilarity -> OutputSimilarity
+	OutputSimilarity -> End
+}

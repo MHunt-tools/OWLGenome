@@ -1,0 +1,44 @@
+// Genome Sequencing and Read Mapping Workflow
+digraph {
+	Start [label=Start color=lightgreen fontname=Helvetica fontsize=10 shape=oval style=filled]
+	LoadGenome [label="Load Genome Sequence
+(Input: genome_path, file_fmt)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenKmersGenome [label="Generate k-mers from Genome
+(Input: genome_seq, k_size, k_stride, include_revcom)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	CreateHash [label="Create Hash Table
+(Input: kmers from genome)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	MinimizeHash [label="Minimize Hash Table
+(Action: Remove overrepresented k-mers)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	LoadReads [label="Load Reads and Ground Truth Data
+(Input: fastq_path, ground_truth_file)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	IterateReads [label="Iterate Over Each Read
+(Action: Process each read)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenKmersRead [label="Generate k-mers from Read
+(Input: read_seq, k_size, k_stride, include_revcom)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	CountFreq [label="Count k-mer Frequencies
+(Action: Frequency count of k-mers)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	GenSketch [label="Generate Weighted MinHash Sketch
+(Input: kmer_freq, WeightedMinHash instance)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	CoarseMap [label="Coarse Mapping
+(Input: sketch_read, genome_hash_table)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	CheckMatch [label="Check for Matches
+(Action: Validate mapping)" color=lightgoldenrod fontname=Helvetica fontsize=10 shape=diamond style=filled]
+	LogResults [label="Log Results
+(Action: Record mapping status)" color=lightblue2 fontname=Helvetica fontsize=10 shape=box style="rounded,filled"]
+	End [label=End color=lightgreen fontname=Helvetica fontsize=10 shape=oval style=filled]
+	Start -> LoadGenome
+	LoadGenome -> GenKmersGenome
+	GenKmersGenome -> CreateHash
+	CreateHash -> MinimizeHash
+	MinimizeHash -> LoadReads
+	LoadReads -> IterateReads
+	IterateReads -> GenKmersRead
+	GenKmersRead -> CountFreq
+	CountFreq -> GenSketch
+	GenSketch -> CoarseMap
+	CoarseMap -> CheckMatch
+	CheckMatch -> LogResults [label="Match Found" color=green]
+	CheckMatch -> IterateReads [label="No Match" color=red]
+	LogResults -> IterateReads
+	IterateReads -> End [label="All Reads Processed" style=dashed]
+}

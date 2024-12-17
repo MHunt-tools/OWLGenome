@@ -1,0 +1,7 @@
+numpy
+biopython
+pandas
+tqdm
+psutil
+numba
+pysam
